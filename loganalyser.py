@@ -9,8 +9,20 @@ def main():
     filename = "programming-task-example-data.log"
     logs = load_log_file(filename)
 
+    visited_urls = get_urls(logs)
+
+
+def get_urls(logs):
+    all_urls = {}
     for log in logs:
         log_data = log.split("\"-\"", 1)[0]
+        url_data = log_data.split("GET ", 1)[1]
+        url = url_data.split(" ")[0]
+        if url in all_urls:
+            all_urls[url] += 1
+        else:
+            all_urls[url] = 1
+    return all_urls
 
 
 # Function to load the data into from the log file
