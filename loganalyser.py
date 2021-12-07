@@ -60,7 +60,6 @@ def get_info(item_dict, item):
         item_dict[item] += 1  # Add one to the value of an existing dictionary item
     else:
         item_dict[item] = 1  # Create new dictionary item
-
     return item_dict
 
 
