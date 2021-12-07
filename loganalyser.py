@@ -3,13 +3,34 @@ Mantel Group Programming Task
 Christian Torrisi
 Log Analyser
 """
+import os.path
 
 
 def main():
-    filename = "programming-task-example-data.log"
-    logs = load_log_file(filename)
+    file_name = "programming-task-example-data.log"
+    logs = load_log_file(file_name)
     data = gather_data(logs)
-    print(data)
+    create_report(data, file_name)
+
+
+def create_report(data, log_file_name):
+    new_file_name = "log_report.txt"
+    count = 1
+
+    while os.path.exists(new_file_name):
+        new_file_name = "log_report_{}.txt".format(count)
+        count += 1
+
+    new_file = open(new_file_name, "w+")
+    new_file.write("Log Report for file: \"{}\"\n\n".format(log_file_name))
+    new_file.write("Number of Unique IP Addresses: {}\n\n".format(len(data[0])))
+    new_file.write("Top 3 Active IP Addresses:\n")
+    for i in range(0, 3):
+        new_file.write("{}: {}   ->   Count: {}\n".format(i+1, data[0][i][0], data[0][i][1]))
+
+    new_file.write("\nTop 3 Visited URLs:\n")
+    for i in range(0, 3):
+        new_file.write("{}: {}   ->   Count: {}\n".format(i+1, data[1][i][0], data[1][i][1]))
 
 
 # Gather all relevant data for analysis into an array
@@ -44,13 +65,13 @@ def get_info(item_dict, item):
 
 
 # Function to load the data from the log file
-def load_log_file(filename):
+def load_log_file(file_name):
     # Try/except to check if the file can be loaded correctly
     try:
-        with open(filename) as file_logs:
+        with open(file_name) as file_logs:
             file_logs = file_logs.readlines()
     except OSError as e:
-        print("Could not open or read file: {}\n{}".format(filename, e))
+        print("Could not open or read file: {}\n{}".format(file_name, e))
     # Catch all/different exceptions could be placed here for better error handling
 
     return file_logs
